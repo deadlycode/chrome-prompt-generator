@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Model açıklamaları
   const modelDescriptions = { // ... (rest of model descriptions remain the same)
+    'gemini-2.5-pro': 'Gemini 2.5 Pro: Gelişmiş düşünme ve muhakeme, çok modlu anlama, gelişmiş kodlama için optimize edilmiş en güçlü kararlı model.',
+    'gemini-2.5-pro-preview-06-05': 'Gemini 2.5 Pro Preview (06-05): Gelişmiş düşünme ve muhakeme, çok modlu anlama, gelişmiş kodlama için optimize edilmiş en güçlü modelin en son önizlemesi.',
+    'gemini-2.5-flash': 'Gemini 2.5 Flash: Hız, ölçek ve maliyet verimliliği için optimize edilmiş yeni nesil kararlı model.',
     'gemini-2.5-flash-preview-05-20': 'Gemini 2.5 Flash Preview: Adaptif düşünme ve maliyet verimliliği için optimize edilmiş en yeni model.',
     'gemini-2.5-pro-preview-05-06': 'Gemini 2.5 Pro Preview: Gelişmiş düşünme ve muhakeme, çok modlu anlama, gelişmiş kodlama için optimize edilmiş en güçlü model.',
     'gemini-2.0-flash': 'Gemini 2.0 Flash: Yeni nesil özellikler, hız ve gerçek zamanlı akış için optimize edilmiş kararlı model.',
