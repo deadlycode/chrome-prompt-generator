@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Flux Prompt Generator</title>
+  <style>
+    body {
+      width: 400px; /* Sabit genişlik */
+      padding: 15px;
+      font-family: Arial, sans-serif;
+      box-sizing: border-box;
+    }
+    select, textarea, input[type="text"] { /* Genel input stilleri */
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box; /* Genişlik hesaplaması için önemli */
+    }
+    textarea {
+      /* width: 100%; */ /* Genel stilden geliyor */
+      min-height: 60px; /* Textarea için minimum yükseklik */
+      resize: vertical;
+    }
+    button {
+      background-color: #4CAF50; /* Yeşil */
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    #result {
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #e9f7ef; /* Hafif yeşilimsi */
+      white-space: pre-wrap; /* Satır sonlarını koru */
+      word-wrap: break-word; /* Uzun kelimeleri böl */
+      display: none; /* Başlangıçta gizli */
+      font-size: 0.95em;
+    }
+    .error { /* Hata mesajları için daha belirgin stil */
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      display: none; /* Başlangıçta gizli */
+      text-align: center;
+    }
+    #profileSelectDropdown {
+      /* Genişlik genel select stilinden geliyor */
+    }
+    #dynamicInputsContainer .dynamic-input-group { /* Her bir label-input çifti için */
+      margin-bottom: 8px;
+    }
+    #dynamicInputsContainer label {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 0.9em;
+      color: #333;
+    }
+    #dynamicInputsContainer input[type="text"] {
+      /* Genişlik ve padding genel input stilinden geliyor */
+      font-size: 0.95em;
+    }
+    #promptPreviewLabel {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    #promptPreviewArea {
+      margin-top: 5px;
+      padding: 10px;
+      border: 1px solid #bdc3c7; /* Daha belirgin border */
+      min-height: 70px; /* Biraz daha yüksek */
+      background-color: #ecf0f1; /* Hafif gri */
+      white-space: pre-wrap; /* Satır sonlarını ve boşlukları koru */
+      word-wrap: break-word; /* Uzun kelimeleri böl */
+      font-family: 'Courier New', Courier, monospace; /* Monospace font */
+      font-size: 0.9em;
+      line-height: 1.4;
+    }
+    .history-button-style { /* Geçmiş butonu için ortak stil */
+        background-color: #3498db; /* Mavi */
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    .history-button-style:hover {
+        opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <h2 style="text-align: center; color: #2c3e50; margin-bottom: 15px;">Flux Prompt Generator</h2>
+
+  <select id="profileSelectDropdown">
+    <option value="" disabled selected>-- Bir Profil Seçin --</option>
+  </select>
+
+  <textarea id="userInputText" placeholder="Ana prompt metnini buraya yazın..." style="width: 100%; height: 80px; margin-top: 10px; margin-bottom: 10px;"></textarea>
+
+  <div id="dynamicInputsContainer" style="margin-top: 10px; margin-bottom: 10px;">
+    <!-- Dinamik input alanları buraya eklenecek -->
+  </div>
+
+  <div id="promptPreviewLabel" style="margin-top: 10px;">Prompt Önizleme:</div>
+  <div id="promptPreviewArea">
+    <!-- Prompt önizlemesi buraya gelecek -->
+  </div>
+
+  <textarea id="input" placeholder="Türkçe açıklamanızı buraya yazın..." style="display:none;"></textarea>
+
+  <button id="generate" style="margin-top: 15px;">Prompt Oluştur</button>
+  <div id="error" class="error"></div> <!-- Hata mesajları için -->
+  <div id="result"></div>
+
+  <!-- Geçmiş butonu script tarafından eklenecek, ama referans için burada bırakılabilir -->
+  <!-- <button id="historyButton" class="history-button-style">Geçmişi Görüntüle</button> -->
+
+  <script src="popup.js"></script>
+</body>
+</html>

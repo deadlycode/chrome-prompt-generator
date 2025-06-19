@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Prompt Geçmişi</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .history-item {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background-color: #f9f9f9;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .history-item h3 { /* For Profile Name */
+      margin-top: 0;
+      margin-bottom: 10px;
+      color: #2980b9;
+      font-size: 1.1em;
+    }
+    .history-item p {
+      margin: 5px 0;
+      font-size: 0.95em;
+      line-height: 1.5;
+    }
+    .history-item strong {
+      color: #555;
+    }
+    .history-block {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed #eee;
+    }
+    .history-block pre { /* For code-like text: prompts, templates */
+      white-space: pre-wrap;
+      word-break: break-all;
+      background-color: #ecf0f1;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 0.9em;
+      color: #333;
+      max-height: 200px; /* Limit height for very long text */
+      overflow-y: auto; /* Add scroll for overflow */
+    }
+    .dynamic-vars {
+      background-color: #fdf2e9; /* Light orange */
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    .dynamic-vars strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .final-output {
+      background-color: #e8f8ef; /* Light green */
+      padding: 10px;
+      border: 1px solid #d0e9c6;
+      border-radius: 4px;
+    }
+    .final-output pre {
+      background-color: transparent; /* Inherit from parent */
+      padding: 0;
+    }
+
+    /* .turkish-text, .english-prompt, .generated-response, .profile-info, .timestamp - these specific classes might be less used or restyled */
+    .timestamp-model-info {
+      font-size: 0.85em;
+      color: #7f8c8d;
+      margin-bottom: 10px;
+    }
+    .copy-button {
+      background-color: #f39c12; /* Orange */
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 0.8em;
+      margin-top: 10px;
+      display: block; /* Make it block to take full width or use float */
+    }
+    .clear-history {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    .no-history {
+      text-align: center;
+      color: #7f8c8d;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Prompt Geçmişi</h1>
+  <button id="clearHistory" class="clear-history">Geçmişi Temizle</button>
+  <div id="historyContainer"></div>
+  <script src="history.js"></script>
+</body>
+</html>

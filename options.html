@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Flux Prompt Generator Ayarları</title>
+  <style>
+    body {
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 5px; /* Profil butonları arası boşluk */
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    .status {
+      margin-top: 10px;
+      padding: 10px;
+      display: none;
+    }
+    .success {
+      background-color: #dff0d8;
+      color: #3c763d;
+      border: 1px solid #d6e9c6;
+    }
+    .error-message { /* Hata mesajları için stil */
+        background-color: #f2dede;
+        color: #a94442;
+        padding: 10px;
+        border: 1px solid #ebccd1;
+        border-radius: 4px;
+        margin-top: 10px;
+        display: none; /* Başlangıçta gizli */
+    }
+    .model-info {
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+      font-style: italic;
+    }
+    textarea { /* Genel textarea stili */
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box; /* Important for width */
+    }
+
+    /* Profil Yönetimi Stilleri */
+    #profileManagementContainer {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+    #profileList .profile-item {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 15px;
+      margin-bottom: 10px;
+      background-color: #f9f9f9;
+    }
+    #profileList .profile-item h4 {
+      margin-top: 0;
+      margin-bottom: 5px;
+    }
+    #profileList .profile-item p {
+      margin-bottom: 10px;
+      font-size: 0.9em;
+      color: #555;
+    }
+    #profileList .profile-item button {
+      padding: 5px 10px; /* Daha küçük butonlar */
+      font-size: 0.9em;
+      margin-right: 5px;
+    }
+    .edit-profile-button { background-color: #3498db; }
+    .delete-profile-button { background-color: #e74c3c; }
+    .duplicate-profile-button { background-color: #f1c40f; color: #333; }
+
+    #profileForm {
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #fefefe;
+    }
+    #profileForm h3 {
+      margin-top: 0;
+    }
+    #profileForm input[type="text"],
+    #profileForm textarea {
+      width: calc(100% - 16px); /* Padding'i hesaba kat */
+    }
+    #saveProfileButton {
+      background-color: #2ecc71; /* Yeşil */
+    }
+    #cancelProfileButton {
+      background-color: #95a5a6; /* Gri */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Gemini API Ayarları</h2>
+    <div id="apiSettingsStatus" class="status"></div> <!-- API ayarları için ayrı status divi -->
+    <div class="form-group">
+      <label for="apiKey">Gemini API Key:</label>
+      <input type="text" id="apiKey" placeholder="API Key'inizi girin">
+    </div>
+    <div class="form-group">
+      <label for="modelSelect">Gemini Model:</label>
+      <select id="modelSelect">
+        <option value="gemini-2.5-flash-preview-05-20">Gemini 2.5 Flash Preview (En Yeni)</option>
+        <option value="gemini-2.5-pro-preview-05-06">Gemini 2.5 Pro Preview (En Güçlü)</option>
+        <option value="gemini-2.0-flash">Gemini 2.0 Flash (Kararlı)</option>
+        <option value="gemini-1.5-pro">Gemini 1.5 Pro (Eski)</option>
+      </select>
+      <div class="model-info" id="modelInfo">Gemini 2.5 Flash Preview: Adaptif düşünme ve maliyet verimliliği için optimize edilmiş en yeni model.</div>
+    </div>
+    <button id="save">Kaydet</button>
+  </div>
+
+  <div class="container" id="profileManagementContainer">
+    <h2>Prompt Profilleri</h2>
+    <div id="profileGeneralStatus" class="status"></div> <!-- Profil işlemleri için genel status divi -->
+    <div id="profileFormStatus" class="error-message"></div> <!-- Profil formu hataları için -->
+    <button id="addNewProfileButton">Yeni Profil Ekle</button>
+    <div id="profileList" style="margin-top:15px;">
+      <!-- Profil listesi buraya gelecek -->
+    </div>
+
+    <form id="profileForm" style="display: none;">
+      <h3>Profil Ekle/Düzenle</h3>
+      <input type="hidden" id="profileIdInput">
+      <div class="form-group">
+        <label for="profileNameInput">Profil Adı:</label>
+        <input type="text" id="profileNameInput" placeholder="Profil adını girin">
+      </div>
+      <div class="form-group">
+        <label for="profileDescriptionInput">Profil Açıklaması:</label>
+        <textarea id="profileDescriptionInput" rows="3" placeholder="Profil açıklamasını girin"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="profileTemplateInput">Prompt Şablonu:</label>
+        <textarea id="profileTemplateInput" rows="5" placeholder="Prompt şablonunu girin"></textarea>
+        <div class="template-helper-text" style="font-size: 0.85em; color: #555; margin-top: 5px;">
+          Prompt şablonunuzda, kullanıcının ana metin girdisinin ekleneceği yeri belirtmek için <code>{USER_INPUT}</code> değişkenini kullanabilirsiniz. Örneğin: <code>Bir resim: {USER_INPUT}, {stil} tarzında.</code>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>İşleme Modu:</label>
+        <div>
+          <input type="radio" id="modeSimple" name="processingMode" value="simple" checked>
+          <label for="modeSimple" style="font-weight:normal; margin-right: 15px;">Basit Şablon (Doğrudan yer tutucu değişimi)</label>
+        </div>
+        <div style="margin-top: 5px;">
+          <input type="radio" id="modeInterpretive" name="processingMode" value="interpretive">
+          <label for="modeInterpretive" style="font-weight:normal;">Yorumlayıcı Talimatlar (Ana girdiyi işlemek için AI kullanır)</label>
+        </div>
+        <div class="template-helper-text" style="font-size: 0.85em; color: #555; margin-top: 8px;">
+          <strong>Basit Şablon:</strong> <code>{USER_INPUT}</code> ve diğer değişkenler doğrudan şablona yerleştirilir. Gemini API'ye gönderilen prompt, bu birleştirilmiş metin olur.<br>
+          <strong>Yorumlayıcı Talimatlar:</strong> <code>{USER_INPUT}</code> ile girilen metin, şablonunuzdaki talimatlarla birlikte Gemini API'ye gönderilir. API'nin bu girdiyi yorumlayarak bir prompt üretmesi beklenir. Bu modda, şablonunuz bir prompt'tan ziyade AI için bir görev tanımı gibi olmalıdır.
+        </div>
+      </div>
+
+      <button type="button" id="saveProfileButton">Profili Kaydet</button>
+      <button type="button" id="cancelProfileButton">İptal</button>
+    </form>
+  </div>
+
+  <div class="container" id="historySettingsContainer" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+    <h2>Geçmiş Ayarları</h2>
+    <div class="form-group">
+      <label for="historyLimitSelect">Geçmiş Limiti:</label>
+      <select id="historyLimitSelect">
+        <option value="20">20 Öğe</option>
+        <option value="50">50 Öğe</option>
+        <option value="100" selected>100 Öğe</option> <!-- Default selected -->
+        <option value="200">200 Öğe</option>
+        <option value="500">500 Öğe</option>
+        <option value="1000">1000 Öğe</option>
+        <option value="0">Maksimum (Tarayıcı Limiti)</option>
+      </select>
+      <div class="template-helper-text" style="font-size: 0.85em; color: #555; margin-top: 5px;">
+        Kaydedilecek maksimum prompt geçmişi sayısını belirleyin. "Maksimum" seçeneği, tarayıcının depolama limitlerine kadar izin verir.
+      </div>
+    </div>
+    <!-- The existing "Kaydet" button for API/Model settings will be used to save this as well -->
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
